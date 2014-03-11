@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<div id="content">
+    <p>sssssssssssssssss</p>
+
+    <p>sssssssssssssssss</p>
+</div>
+<input type="button" value="update" onclick="bindData('update')"/>
+<input type="button" value="insert" onclick="bindData('insert')"/>
+<input type="button" value="remove" onclick="bindData('remove')"/>
+<input type="button" value="reset" onclick="bindData('reset')"/>
+<input type="button" value="doall" onclick="bindData('doall')"/>
+
+<div>
+    <p>test it</p>
+</div>
+<script src="d3.v3.min.js"></script>
+<script>
+    var dataset0 = [1, "A", 2, "B", 3]; //javascript是弱语言类型，这样定义数组是允许的，实际上相当于 {0:1,1:"A",2:"B",3:3}
+    function bindData(operation) {
+        var p = d3.select("div#content")
+                .selectAll("p")   //选择div下的所有p元素
+                .data(dataset0); // ######绑定数据。
+
+        //更新已有元素的数据
+        if (operation === "update") {
+            p.text(function (d, i) {
+                return  "dataset0[" + i + "] is " + d;
+            });
+        }
+        //插入数据
+        //###### enter() 函数告诉d3 需要绑定多余的数据，
+        //比如 页面有2个p元素，但是数据有5个，这时 数据个数>需要绑定的Dom元素个数，那么则需要添加Dom元素
+        if (operation === "insert") {
+            p.enter()
+                    .append("p") //######添加元素的函数，值为string,一般为html或者svg的Dom元素名称，如：html的div,p,span, svg的g,circle,line等
+                    .text(function (d, i) {
+                        return i + ":" + d
+                    });
+        }
+        //移除数据
+        //在执行完 更新和插入之后，通常会吧多余的元素移除掉。为了省点事，请先运行完成 更新和插入数据后在点击移除按钮
+        if (operation === "remove") {
+            //在插入和更新完成以后，现在页面上已经有了五个P元素，现在就利用这五个p元素；
+            //假设一打开页面这5个p就存在
+            dataset0.pop(); //模拟一组数据，为了效果更加直观，减少原有数组的一个数据
+            var rp = d3.select("div#content")
+                    .selectAll("p")
+                    .data(dataset0);
+            rp.exit().remove(); // #### exit() 选择多余的元素， remove()移除选中的元素;
+        }
+
+        //重置数据
+        if (operation === "reset") {
+            dataset0 = [1, "A", 2, "B", 3];
+            d3.select("#content").selectAll("p").remove();
+            d3.select("#content").selectAll("p").data([1, 2]).enter().append("p").html("hhhhhhhhhhh");
+        }
+
+        if (operation === "doall") {
+            //先重置 不另外写重置函数了，直接copy上面的
+            dataset0 = [1, "A", 2, "B", 3];
+            d3.select("#content").selectAll("p").remove();//此时原有的P已经不存在了
+            console.log(p);
+            d3.select("#content").selectAll("p").data([1, 2]).enter().append("p").html("hhhhhhhhhhh");
+
+            var p = d3.select('div#content').selectAll("p");
+            //重新绑定数据
+            p.data(dataset0);
+
+            //先更新
+            p.text(function (d, i) {
+                return  "dataset0[" + i + "] is " + d;
+            });
+            //再插入数据
+//            p.enter()
+//                    .append("p")
+//                    .text(function (d, i) {
+//                        return i + ":" + d
+//                    });
+        }
+
+    }
+</script>
+</body>
+</html>

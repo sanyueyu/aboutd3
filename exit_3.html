@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<script>
+    var influences = [
+        ["a", "b"],
+        ["a", "c"],
+        ["c", "d"],
+        ["b", "d"],
+        ["d", "a"]
+    ];
+    function nexts(graphs, node) {
+        if(graphs.length == 0) return [];
+        var pair = graphs[0];
+        var from = pair[0];
+        var to = pair[1];
+        var more = graphs.slice(1);
+
+        if(node == from) {
+            console.log(to);
+            return nexts(more, node);
+        } else {
+            return nexts(more, node);
+        }
+    }
+    nexts(influences, "a");
+</script>
+</body>
+</html>

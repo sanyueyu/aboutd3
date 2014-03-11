@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="d3.v3.js"></script>
+</head>
+<body>
+<table>
+    <thead>
+    <tr><td>  A</td><td>  B</td><td>  C</td><td>  D</td></tr>
+    </thead>
+    <tbody>
+    <tr><td>  0</td><td>  1</td><td>  2</td><td>  3</td></tr>
+    <tr><td>  4</td><td>  5</td><td>  6</td><td>  7</td></tr>
+    <tr><td>  8</td><td>  9</td><td> 10</td><td> 11</td></tr>
+    <tr><td> 12</td><td> 13</td><td> 14</td><td> 15</td></tr>
+    </tbody>
+</table>
+<script>
+    var td = d3.selectAll("tr").selectAll("td");
+    var td2 = d3.selectAll("td");
+    var color = d3.scale.category10();
+    td.style("background-color", function(d, i) {
+        return color(i);
+    });
+
+    var dataset = [
+        [1,2,3],
+            [4,5]
+    ];
+    var divs = d3.select("body")
+            .selectAll("div")
+            .data(dataset)
+            .enter()
+            .append("div");
+    divs.selectAll("p")
+            .data(function(d) {
+                return d;
+            })
+            .enter()
+            .append("p");
+
+
+
+</script>
+</body>
+</html>

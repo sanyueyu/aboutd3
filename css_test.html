@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <style>
+         div {
+             height: 800px;;
+         }
+        div:target {
+            background-color: yellow;
+        }
+        li:nth-child(odd) {
+            background-color: #ccc;
+        }
+        a:after {
+            content: """("attr(href)")";
+        }
+		span {
+			/*display: inline-block;*/
+			/*width: 200px;*/
+			/*height: 200px;*/
+		}
+        label {
+            display: block;
+        }
+        #testspan {
+            margin: 10px;
+            padding: 20px;
+            height: 200px;
+        }
+    </style>
+</head>
+<body>
+<span id="testspan">ddddddddddddddd</span>
+<fieldset id="login">
+    <label for="name">
+        name:<br />
+        <input type="text" name="name" placeholder="george" /></label>
+    <label for="password">
+        password:<br />
+        <input type="text" name="password" placeholder="******" disabled /></label>
+</fieldset>
+
+<span></span>
+        <a href="#target">click</a>
+<div>
+    <ul>
+        <li>qqqqqqqqqqqqq</li>
+        <li>qqqqqqqqqqqqq</li>
+        <li>qqqqqqqqqqqqq</li>
+        <li>qqqqqqqqqqqqq</li>
+        <li>qqqqqqqqqqqqq</li>
+    </ul>
+</div>
+<div id="target"></div>
+        <h1>Results for search term <mark>love</mark>:</h1>
+        <ul>
+            <li><a href=”/songs/allyouneedislove/”>All you need is
+                p <mark>love</mark></a> by The Beatles</li>
+            <li><a href=”/songs/lovewilltearusapart/”><mark>Love</mark> will
+                p tear us apart</a> by Joy Division</li>
+            <li><a href=”/songs/lovehatelove/”><mark>Love</mark>, hate,
+                p <mark>love</mark></a> by Alice in Chains</li>
+        </ul
+		
+</body>
+</html>

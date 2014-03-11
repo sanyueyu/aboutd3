@@ -1,0 +1,59 @@
+<DKXROOT>
+    <FileItem SubFileRelativePath="/" FilePath="/mnt/us/documents/work/test_d3/d3.v3.zip">
+        <Version>DKX-1.0</Version>
+        <BookInfo>
+            <BookName>d3.v3.zip</BookName>
+            <BookAbstract></BookAbstract>
+            <BookAuthor></BookAuthor>
+            <BookSource></BookSource>
+            <FilePath></FilePath>
+            <FileFormat>23</FileFormat>
+            <CreateTime>2014-02-19 20:15:51</CreateTime>
+            <AddOrder>1006</AddOrder>
+            <LastReadTime></LastReadTime>
+            <ReadingOrder>-1</ReadingOrder>
+            <FileSize>122433</FileSize>
+            <Password></Password>
+            <BookTags />
+            <TxtTocs />
+            <TocExtracted>0</TocExtracted>
+            <DataVersion>0</DataVersion>
+            <BookRevision></BookRevision>
+            <ReadingDataSync>0</ReadingDataSync>
+            <Crash>0</Crash>
+            <BookID>j2289d47cgf4056g602g6f4cc12g54c8</BookID>
+        </BookInfo>
+        <ReadingData UserName="">
+            <Modified>0</Modified>
+            <Progress>
+                <Type>BOOKMARK</Type>
+                <KernelVersion>2.4.0.22989</KernelVersion>
+                <Color></Color>
+                <Tag></Tag>
+                <DataId></DataId>
+                <CreateTime></CreateTime>
+                <LastModifyTime></LastModifyTime>
+                <Creator></Creator>
+                <BookContent></BookContent>
+                <UserContent></UserContent>
+                <BeginPos>
+                    <ChapterID></ChapterID>
+                    <OffsetInChapter>-1</OffsetInChapter>
+                    <ChapterIndex>0</ChapterIndex>
+                    <ParaIndex>0</ParaIndex>
+                    <AtomIndex>0</AtomIndex>
+                </BeginPos>
+                <EndPos>
+                    <ChapterID></ChapterID>
+                    <OffsetInChapter>-1</OffsetInChapter>
+                    <ChapterIndex>0</ChapterIndex>
+                    <ParaIndex>0</ParaIndex>
+                    <AtomIndex>0</AtomIndex>
+                </EndPos>
+                <Uploaded>0</Uploaded>
+                <Percent>-1</Percent>
+            </Progress>
+        </ReadingData>
+        <SettingData />
+    </FileItem>
+</DKXROOT>

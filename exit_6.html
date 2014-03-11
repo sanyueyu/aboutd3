@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <style>
+        div {
+            margin: 10px 10px;
+            height: 20px;
+            background: #0055ff;
+        }
+    </style>
+    <script src="d3.v3.js"></script>
+</head>
+<body>
+
+<script>
+    var dataset = [1, 2, 3];
+    var divs = d3.select("body")
+            .selectAll("div")
+            .data(dataset)
+            .enter()
+            .append("div")
+            .style("width", function (d) {
+                return d * 100 + "px";
+            });
+
+    function addOne() {
+        dataset.push(4);
+        divs.data(dataset, function(d, i) {
+            return d;
+        })
+                .enter()
+                .append("div")
+                .transition()
+                .styleTween("width", function(d, i) {
+                    var width = d * 100 + "px";
+                    return d3.interpolate("0", width);
+                });
+    }
+
+function change() {
+    dataset = [3];
+    divs.data(dataset, function(d) {
+        return d;
+    }).exit() .remove();
+}
+setTimeout(change, 2000);
+</script>
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="http://d3js.org/d3.v2.min.js?2.10.1"></script>
+    <style>
+        .inputfield {
+            width:132px;
+            float:left;
+        }
+        #svg {
+            float: left;
+        }
+        .grafiek {
+            width:100%;
+            height:300px;
+        }
+    </style>
+    <script src="d3.v3.min.js"></script>
+</head>
+<body>
+<div class="grafiek"></div>
+
+<div data-bind="foreach: rects">
+    <div class="inputfield">
+        <input type="range" min="0" max="5000" step="100" data-bind="value: h" />
+        <input type="text" data-bind="value: h" size="5" />
+    </div>
+</div>
+
+<script src="d3.v3.min.js"></script>
+<script src="http://knockoutjs.com/downloads/knockout-3.0.0.js" type="text/javascript"></script>
+<script>
+    var nrects = 1;
+    var barWidth = 130;
+    var barPadding = 2;
+    var barColor = "#2d578b"
+    var svgHeight = 300;
+    var standaardBedrag = 3000;
+
+    //Set scale for input
+    var y = d3.scale.linear()
+            .domain([0, 1000])
+            .rangeRound([0, (svgHeight/5)]);
+
+    //Set scales for lines
+    var yScale = d3.scale.linear()
+            .domain([0, 1000])
+            .rangeRound([0, (svgHeight)]);
+
+    //Knockout bindings
+    function Rect() {
+        var self = this;
+        self.x = ko.observable(0);
+        self.y = ko.observable(0);
+        self.w = ko.observable(barWidth);
+        self.h = ko.observable(standaardBedrag);
+        self.name = ko.observable("rect" + nrects++);
+        self.rect = ko.computed(function(){
+            return {
+                x:self.x(),
+                y:self.y(),
+                w:self.w(),
+                h:self.h()
+            };
+        });
+    };
+
+    //Append SVG Container
+    var svg = d3.select(".grafiek").append("svg")
+            .attr("width", 5 * (barWidth + barPadding) + 200)
+            .attr("height", svgHeight)
+            .attr("id", "svg");
+
+    //DOELSTELLING Line
+    svg.append("line")
+            .attr("class", "doelstelling")
+            .attr("y1", 100)
+            .attr("y2", 100)
+            .attr("x1", 0)
+            .attr("x2", 5 * (barWidth + barPadding) + 50)
+            .style("stroke", "#000");
+
+    //Lines in background
+    svg.selectAll("line")
+            .data(y.ticks(10))
+            .enter().append("line")
+            .attr("y1", yScale)
+            .attr("y2", yScale)
+            .attr("x1", 0)
+            .attr("x2", 5 * (barWidth + barPadding) + 50)
+            .style("stroke", "#ccc");
+
+    //Labels to lines
+    /*	svg.selectAll(".label")
+     .data(yScale.ticks(10))
+     .enter().append("text")
+     .attr("x", (barWidth + barPadding) + 50)
+     .attr("y", yScale)
+     .text("0");
+     */
+
+    //Knockout takes data and add to var rects
+    function ViewModel() {
+        var self = this;
+        self.rects = ko.observableArray([]);
+        self.addRect = function () {
+            self.rects.push(new Rect(self));
+        };
+    };
+
+    //On change parse the input values to numbers
+    var drag = d3.behavior.drag()
+            .origin(Object)
+            .on("drag", function (d) {
+                // Update the view model
+                d.x(parseInt(d.x()) + d3.event.dx);
+                d.y(parseInt(d.y()) + d3.event.dy);
+            });
+
+    //On load apply the numbers from input to bindings
+    window.onload = function() {
+        var vm = new ViewModel();
+        ko.applyBindings(vm);
+
+//update
+        function update(data) {
+            var rects = d3.select("#svg")
+                    .selectAll("rect")
+                    .data(data, function (d) { return d.name();
+                    });
+
+            rects.enter()
+                    .append("rect")
+                    .attr("id", function (d) { return d.name(); })
+                    .attr("opacity", 0.0)
+                    .attr("fill", barColor)
+                    .attr("x", (data.length - 1) * (barWidth + barPadding))
+                    .transition()
+                    .duration(1000)
+                    .attr("opacity", 1);
+
+            rects
+                    .attr("width", function (d) { return d.w(); })
+                    .attr("height", function (d) { return y(d.h()); })
+                    .attr("y", function (d) { return svgHeight - y(d.h()); })
+                    .text(function (d) { return d.h(); })
+                    .call(drag);
+
+            //Selector and data in var aRect
+            var aRect = d3.select("#svg")
+                    .selectAll("text")
+                    .data(data, function (d) { return d.name();
+                    });
+
+            //insert text element
+            aRect.enter()
+                    .insert("text")
+                    .attr("x", (data.length - 1) * (barWidth + barPadding)
+                    );
+
+            //Update labels
+            aRect
+                    .text(function(d) { return "\u20ac" + d.h(); })
+                    .attr("y", function (d) { return svgHeight - y(d.h());
+                    });
+
+            rects.exit().remove();
+        }
+
+
+
+        var subs = [];
+        vm.rects.subscribe(function (newValue) {
+            update(newValue);
+            ko.utils.arrayForEach(subs, function (sub) { sub.dispose(); });
+            ko.utils.arrayForEach(newValue, function (item) {
+                subs.push(item.rect.subscribe(function () {
+                    update(newValue);
+                }));
+            });
+        });
+
+        // Add one to get us started
+        // Haven't figured this one out yet to generated 5 of em
+        vm.rects.push(new Rect());
+        vm.rects.push(new Rect());
+        vm.rects.push(new Rect());
+        vm.rects.push(new Rect());
+        vm.rects.push(new Rect());
+    };
+
+</script>
+</body>
+</html>

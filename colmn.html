@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+    body {
+        position: relative;
+        width: 960px;
+    }
+
+    .axis text {
+        font-size: 10px;
+    }
+
+    .axis path,
+    .axis line {
+        stroke: #000;
+        shape-rendering: crispEdges;
+        fill: none;
+    }
+
+    .bar {
+        fill: steelblue;
+        fill-opacity: 0.9;
+    }
+
+    label {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+
+    .x.axis path {
+        display: none;
+    }
+
+</style>
+<body>
+<label><input type="checkbox"> sort value</label>
+<!--<svg>-->
+<!--&lt;!&ndash;<rect fill = 'orange' stroke = 'black' width = '150' height= '75' x = '50' y = '50' rx = '10' ry = '50' />&ndash;&gt;
+-->
+<!--&lt;!&ndash;<circle fill = 'orange' stroke = 'black' stroke-width = '3' cx = '40' cy = '25' r = '20'></circle>&ndash;&gt;
+-->
+<!--&lt;!&ndash;<ellipse stroke = 'orange' fill = 'orange' cx = '100' cy = '160' rx = '75' ry = '50'></ellipse>&ndash;&gt;
+-->
+<!--&lt;!&ndash;<line x1 = '70' y1 = '100' x2 = '570' y2 = '200' style = 'stroke: blue;'></line>&ndash;&gt;-->
+<!--&lt;!&ndash;<polygon points =  '15, 15, 100, 82, 30, 150' fill = 'orange' stroke = 'black' stroke-width = '4'></polygon>&ndash;&gt;
+-->
+<!--</svg>-->
+<script src="http://d3js.org/d3.v2.min.js?2.10.1"></script>
+<script>
+    var margin = {top: 20, right: 20, bottom: 30, left: 40}
+    var width = 900 - margin.left - margin.right;
+    var height = 500 - margin.top - margin.bottom;
+
+    var formatPercent = d3.format(".0%");
+
+    var x = d3.scale.ordinal().rangeRoundBands([0, width], .1, 1);
+    var y = d3.scale.linear().range([height, 0]);
+
+    var xAxis = d3.svg.axis().scale(x).orient("bottom");
+    var yAxis = d3.svg.axis().scale(y).orient("left").tickFormat(formatPercent);
+
+    var svg = d3.select("body").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", width + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    var data = [
+        {letter: 'A', frequency: .08167},
+        {letter: 'B', frequency: .01492},
+        {letter: 'C', frequency: .02780},
+        {letter: 'D', frequency: .04253},
+        {letter: 'E', frequency: .12702}
+    ];
+
+    function draw(data) {
+        data.forEach(function (d) {
+            d.frequency = +d.frequency;
+        });
+
+        x.domain(data.map(function (d) {
+            return d.letter;
+        }));
+        y.domain([0, d3.max(data, function (d) {
+            return d.frequency;
+        })]);
+
+        svg.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(0," + height + ")")
+                .call(xAxis);
+        svg.append("g")
+                .attr("class", "y axis")
+                .call(yAxis)
+                .append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("y", 6)
+                .attr("dy", ".71em")
+                .style("text-anchor", "end")
+                .text("Frequency");
+        svg.selectAll(".bar")
+                .data(data)
+                .enter().append("rect")
+                .attr("class", "bar")
+                .attr("x", function (d) {
+                    return x(d.letter);
+                })
+                .attr("y", function (d) {
+                    return y(d.frequency);
+                })
+                .attr("width", x.rangeBand())
+                .attr("height", 0)
+                .transition()
+                .attr("height", function (d) {
+                    return height - y(d.frequency);
+                })
+    }
+
+    function change() {
+        clearTimeout(sortTimeout);
+        var x0 = x.domain(data.sort(this.checked
+                                ? function (a, b) {
+                            return b.frequency - a.frequency;
+                        }
+                                : function (a, b) {
+                            return d3.ascending(a.letter, b.letter);
+                        })
+                        .map(function (d) {
+                            return d.letter
+                        }))
+                .copy();
+
+        var transition = svg.transition().duration(750);
+        var delay = function (d, i) {
+            return i * 50;
+        };
+
+        transition.selectAll(".bar")
+                .delay(delay)
+                .attr("x", function (d) {
+                    return x0(d.letter);
+                });
+
+        transition.selectAll(".x.axis")
+                .call(xAxis)
+                .selectAll("g")
+                .delay(delay);
+    }
+
+    draw(data);
+    var sortTimeout = setTimeout(function () {
+        d3.select("input").property("checked", true).each(change);
+    }, 2000);
+    d3.select("input").on("change", change);
+</script>

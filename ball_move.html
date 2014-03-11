@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <style>
+        .rect rect {
+            fill: white;
+            stroke: black;
+        }
+
+        .circle circle {
+            fill: orange;
+            stroke: black;
+            stroke-width: 1px;
+        }
+    </style>
+</head>
+<body>
+<script src="http://d3js.org/d3.v2.min.js?2.10.1"></script>
+<script>
+    var margin = {top: 20, right: 20, bottom: 30, left: 40};
+    var width = 900 - margin.left - margin.right;
+    var height = 500 - margin.top - margin.bottom;
+
+    var svg = d3.select("body").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    svg.append("g").attr("class", "rect").append("rect").attr("x", 0).attr("y", 0)
+            .attr("height", "90%").attr("width", "90%");
+    svg.append("g").attr("class", "circle").append("circle").attr("cx", 40).attr("cy", 40)
+            .attr("r", 40);
+
+    function change() {
+        myCircle = d3.select("circle");
+        cx = +myCircle.attr("cx");
+        cy = +myCircle.attr("cy");
+        r = +myCircle.attr("r");
+        rectWidth = 0.9 * 500;
+        if (cy + r > rectWidth) {
+            d3.select("circle").transition().attr("cx", cx + 20).attr("cy", cy - 20); return;
+        }
+        d3.select("circle").transition().attr("cx", cx + 20).attr("cy", cy + 20);
+    }
+    setInterval(change, 500);
+</script>
+</body>
+</html>

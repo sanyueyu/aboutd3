@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="d3.v3.min.js"></script>
+</head>
+<body>
+  <script>
+      var margin = 20;
+      var width = 800 - margin * 2;
+      var height = 600 - margin * 2;
+
+      var svg = d3.select("body")
+              .append("svg")
+              .attr("width", 800)
+              .attr("height", 600)
+              .append("g")
+              .attr("transform", "translate(" + margin + "," + margin + ")");
+                  /*
+      var path = svg.append("path")
+              .attr("d", "M50 50L500 500L500 500")
+              .attr("stroke", "green")
+              .attr("fill", "none")
+              .transition()
+              .duration(2800)
+              .attr("d", "M50 50L500 500L400 600");
+                    */
+      var path = svg.append("path")
+              .attr("stroke", "green")
+              .attr("fill", "none")
+              .transition(3000)
+              .attrTween("d", function() {
+                  return d3.interpolate("M50 50", "M50 50L500 500");
+              });
+      var color = d3.scale.category10();
+      var dataset = [1,3,5,7,7,9 ];
+      d3.select("body").selectAll("div")
+              .data(dataset)
+              .enter()
+              .append("p", "svg")
+              .style("background", function(d, i) {
+                  return color(d);
+              })
+              .style("height", "20px")
+              .style("width", function(d) {
+                  return d * 100 + "px";
+              });
+
+  </script>
+</body>
+</html>
