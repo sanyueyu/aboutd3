@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="d3.v3.js"></script>
+    <style>
+        .site {
+            box-sizing: border-box;
+            -webkit-transition: 1s ease-out;
+            transition: 1s ease-out;
+            overflow: hidden;
+            background: green;
+            padding: 10px 20px;
+            position: absolute;
+            width: 200px;
+            height: 100px;
+        }
+        #index_0 {
+            top: 10px;
+            left: 20px;
+        }
+        #index_1 {
+            top: 10px;
+            left: 240px;
+        }
+        #index_2 {
+            top: 10px;
+            left: 460px;
+        }
+        #index_3 {
+            top: 10px;
+            left: 680px;
+        }
+        #index_4 {
+            top: 120px;
+            left: 20px;
+        }
+        #index_5 {
+            top: 120px;
+            left: 240px;
+        }
+        #index_6 {
+            top: 120px;
+            left: 460px;
+        }
+        #index_7 {
+            top: 120px;
+            left: 680px;
+        }
+        #index_8 {
+            top: 230px;
+            left: 20px;
+        }
+        #index_9 {
+            top: 230px;
+            left: 240px;
+        }
+        #index_10 {
+            top: 230px;
+            left: 460px;
+        }
+        #index_11 {
+            top: 230px;
+            left: 680px;
+        }
+
+    </style>
+</head>
+<body>
+<!--<div class="site" id="index_1">-->
+<script>
+    var data = [
+        {
+            "url": "http://www.ehaier.com/product/5002.html?ebi=ref-se-1-1",
+            "title": "海尔冰箱 BCD-225SLDA 报价 ",
+            "pageviews": 5
+        },
+        {
+            "url": "http://search.ehaier.com/BCD_btX_225SLDA-se.html",
+            "title": "BCD-225SLDA - 商品搜索 -",
+            "pageviews": 5
+        },
+        {
+            "url": "http://www.ehaier.com/subject/night.html",
+            "title": "海尔商城约惠晚6点，5小时疯狂让利越夜越",
+            "pageviews": 3
+        },
+        {
+            "url": "http://www.ehaier.com/subject/mookatv.html?ebi=ref-ix-bn-0-a-1-1",
+            "title": "模卡电视首发-海尔商城-新生活从这里开始",
+            "pageviews": 3
+        },
+        {
+            "url": "http://www.ehaier.com/product/2894.html?ebi=ref-se-1-2",
+            "title": "海尔冰箱 BCD-539WT(惠民) 报",
+            "pageviews": 2
+        },
+        {
+            "url": "http://www.ehaier.com/member.php?flag=login",
+            "title": "用户中心",
+            "pageviews": 2
+        },
+        {
+            "url": "http://www.ehaier.com/guxiang/",
+            "title": "海尔他乡在线 —“专为异乡同胞解决关爱家",
+            "pageviews": 2
+        },
+        {
+            "url": "http://www.ehaier.com/cart.html",
+            "title": "购物车",
+            "pageviews": 2
+        }];
+    var another_data = [
+        {
+            "url": "http://www.ehaier.com/subject/night.html",
+            "title": "海尔商城约惠晚6点，5小时疯狂让利越夜越",
+            "pageviews": 3
+        },
+        {
+            "url": "http://www.ehaier.com/subject/mookatv.html?ebi=ref-ix-bn-0-a-1-1",
+            "title": "模卡电视首发-海尔商城-新生活从这里开始",
+            "pageviews": 3
+        },
+        {
+            "url": "http://www.ehaier.com/product/2894.html?ebi=ref-se-1-2",
+            "title": "海尔冰箱 BCD-539WT(惠民) 报",
+            "pageviews": 2
+        },
+        {
+            "url": "http://www.ehaier.com/member.php?flag=login",
+            "title": "用户中心",
+            "pageviews": 2
+        },
+        {
+            "url": "http://www.ehaier.com/guxiang/",
+            "title": "海尔他乡在线 —“专为异乡同胞解决关爱家",
+            "pageviews": 2
+        },
+        {
+            "url": "http://www.ehaier.com/cart.html",
+            "title": "购物车",
+            "pageviews": 223
+        }];
+    d3.selectAll(".site")
+            .data(data)
+            .enter()
+            .append("div")
+            .attr("class", "site")
+            .attr("id", function(d, i) {
+                return "index_" + i;
+            })
+            .text(function(d) {
+                return d.url;
+            });
+    var  temp = true;
+    setInterval(function() {
+        if(temp) {
+            go(another_data);
+        } else {
+            go(data);
+        }
+        temp = !temp;
+    }, 2000);
+
+    function go(data) {
+        var sites = d3.selectAll(".site")
+                .data(data, function(d) {
+                    return d.url;
+                });
+        sites.exit().remove();
+        sites.attr("id", function(d, i) {
+                return "index_" + i;
+        });
+        sites.enter()
+                .append("div")
+                .attr("class", "site")
+                .attr("id", function(d, i) {
+                    return "index_" + i;
+                })
+                .text(function(d) {
+                    return d.url;
+                });
+    }
+</script>
+</body>
+</html>
